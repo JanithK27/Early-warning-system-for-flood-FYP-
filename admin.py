@@ -55,11 +55,11 @@ for model_name, model in models.items():
         accuracies[model_name] = accuracy
 
 # Display accuracies of all models
-for model_name, accuracy in accuracies.items():
-    if model_name == 'Linear Regression':
-        print(f'{model_name} MSE: {accuracy:.4f}')
-    else:
-       print(f'{model_name} Accuracy: {accuracy * 100:.2f}%')
+#for model_name, accuracy in accuracies.items():
+#    if model_name == 'Linear Regression':
+#        print(f'{model_name} MSE: {accuracy:.4f}')
+#    else:
+#       print(f'{model_name} Accuracy: {accuracy * 100:.2f}%')
 
 # Select the best model
 best_model_name = max(accuracies, key=accuracies.get)
