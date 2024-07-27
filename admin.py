@@ -12,7 +12,7 @@ def generate_alert_message(water_level):
         return "No immediate flood threat detected."
 
 # Example predicted water level
-predicted_water_level = 3.6  # Example predicted water level
+predicted_water_level = 5.1  # Example predicted water level
 
 # Generate alert message based on predicted water level
 alert_message = generate_alert_message(predicted_water_level)
