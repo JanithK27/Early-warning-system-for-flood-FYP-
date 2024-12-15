@@ -1,0 +1,130 @@
+/* Global Styles */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #0d1b4c; /* Dark blue background */
+    color: white;
+}
+
+.dashboard-container {
+    max-width: 375px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header Section */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-size: 20px;
+    text-align: center;
+}
+
+.back-button,
+.help-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Water Level Section */
+.current-water-level {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.current-water-level h2 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.water-level-chart {
+    width: 100%;
+    border-radius: 10px;
+}
+
+/* Rainfall Section */
+.current-rainfall {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.current-rainfall h2 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.current-rainfall h2 span {
+    font-weight: bold;
+    color: #ffff66; /* Yellow color for rainfall */
+}
+
+.rainfall-bg {
+    width: 100%;
+    border-radius: 10px;
+}
+
+/* Risk Alert Section */
+.risk-alert {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.risk-alert h3 {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.risk-timings {
+    display: flex;
+    justify-content: space-between;
+}
+
+.risk-block {
+    flex: 1;
+    padding: 10px;
+    margin: 0 5px;
+    background-color: #142653;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.risk-block h4 {
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: #ff5555; /* Red for headings */
+}
+
+.areas {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.area {
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    color: black;
+    text-align: center;
+    font-weight: bold;
+}
+
+.area.green {
+    background-color: #66ff66; /* Green background */
+}
+
+.area.yellow {
+    background-color: #ffff66; /* Yellow background */
+}
+
+.area.red {
+    background-color: #ff6666; /* Red background */
+}
