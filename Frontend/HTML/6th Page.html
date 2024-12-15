@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flood Alert Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header Section -->
+        <header>
+            <button class="back-button">←</button>
+            <h1>WELCOME to FloodGuard</h1>
+            <button class="help-button">?</button>
+        </header>
+
+        <!-- Water Level Section -->
+        <section class="current-water-level">
+            <h2>Current Water Level</h2>
+            <img src="water-level-chart.png" alt="Water Level Chart" class="water-level-chart">
+        </section>
+
+        <!-- Rainfall Section -->
+        <section class="current-rainfall">
+            <h2>Current Rainfall: <span>44mm</span></h2>
+            <img src="rainfall-bg.png" alt="Rainfall Background" class="rainfall-bg">
+        </section>
+
+        <!-- Risk Alert Section -->
+        <section class="risk-alert">
+            <h3>Areas at Risk of Flooding in the Next 3 Hours!</h3>
+            <div class="risk-timings">
+                <div class="risk-block">
+                    <h4>1 HOUR</h4>
+                    <div class="areas">
+                        <span class="area green">Area 01</span>
+                        <span class="area green">Area 02</span>
+                        <span class="area yellow">Area 03</span>
+                    </div>
+                </div>
+                <div class="risk-block">
+                    <h4>2 HOUR</h4>
+                    <div class="areas">
+                        <span class="area red">Area 01</span>
+                        <span class="area yellow">Area 02</span>
+                        <span class="area green">Area 03</span>
+                    </div>
+                </div>
+                <div class="risk-block">
+                    <h4>3 HOUR</h4>
+                    <div class="areas">
+                        <span class="area red">Area 01</span>
+                        <span class="area yellow">Area 02</span>
+                        <span class="area yellow">Area 03</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

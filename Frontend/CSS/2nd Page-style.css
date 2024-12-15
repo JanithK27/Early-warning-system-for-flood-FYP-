@@ -1,0 +1,120 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #0b144c;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+}
+
+.back-button a {
+    color: white;
+    font-size: 24px;
+    text-decoration: none;
+    position: absolute;
+    left: 20px;
+    top: 20px;
+}
+
+/* Logo */
+.logo-container {
+    margin: 20px 0;
+}
+
+.logo {
+    width: 150px; /* Adjust the size as needed */
+    height: 150px;
+    border-radius: 50%;
+    object-fit: contain;
+}
+
+/* Heading */
+h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: white;
+}
+
+/* Input Fields */
+.input-group {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.input-group label {
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Buttons */
+button {
+    background-color: #ff00ff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* Forgot password */
+.forgot-password {
+    margin-top: 10px;
+}
+
+.forgot-password a {
+    color: white;
+    text-decoration: underline;
+}
+
+/* Google Sign-In */
+.google-sign-in {
+    margin-top: 20px;
+}
+
+.google-btn {
+    background-color: white;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+}
+
+.google-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    object-fit: contain;
+}
+
+.google-btn img {
+    margin-right: 10px;
+}

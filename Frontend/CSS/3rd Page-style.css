@@ -1,0 +1,80 @@
+/* style.css */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #0b0945; /* Matching the blue background from the screenshot */
+    color: white;
+}
+
+.reset-password-container {
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    background-color: #0b0945; /* Container color matches the page background */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.instructions {
+    font-size: 14px;
+    margin: 10px 0;
+}
+
+.form-label {
+    display: block;
+    text-align: left;
+    margin: 10px 0 5px;
+    font-size: 16px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.submit-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ff00ff; /* Pink button color from the screenshot */
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background-color: #d100d1; /* Slightly darker pink on hover */
+}
+
+.check-email-text {
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+.back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 18px;
+    background: none;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
