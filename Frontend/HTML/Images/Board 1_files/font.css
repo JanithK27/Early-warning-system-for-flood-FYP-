@@ -1,0 +1,21 @@
+@font-face {
+	font-family: "Phosphor";
+	src: url("https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/Phosphor.woff2") format("woff2"),
+	  url("https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/Phosphor.woff") format("woff"),
+	  url("https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/Phosphor.ttf") format("truetype"),
+	  url("https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/Phosphor.svg#Phosphor") format("svg");
+	font-weight: normal;
+	font-style: normal;
+	font-display: block;
+  }
+
+  @font-face {
+	font-family: "Phosphor-Fill";
+	src: url("https://unpkg.com/@phosphor-icons/web@2.0.3/src/fill/Phosphor-Fill.woff2") format("woff2"),
+	  url("https://unpkg.com/@phosphor-icons/web@2.0.3/src/fill/Phosphor-Fill.woff") format("woff"),
+	  url("https://unpkg.com/@phosphor-icons/web@2.0.3/src/fill/Phosphor-Fill.ttf") format("truetype"),
+	  url("https://unpkg.com/@phosphor-icons/web@2.0.3/src/fill/Phosphor-Fill.svg#Phosphor-Fill") format("svg");
+	font-weight: normal;
+	font-style: normal;
+	font-display: block;
+  }

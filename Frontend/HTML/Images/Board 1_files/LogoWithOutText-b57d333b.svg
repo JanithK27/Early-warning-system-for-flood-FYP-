@@ -1,0 +1,41 @@
+<svg width="32" height="33" viewBox="0 0 32 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g opacity="0.3" filter="url(#LogoWithOutText_svg__a)">
+    <path d="M23.0831 18.4451C23.0074 17.6426 22.2125 17.3739 21.4782 17.6786C20.4562 18.1025 18.927 19.4311 18.4785 19.9288C16.2074 22.4667 15.7911 24.9914 15.5886 27.1073C15.386 29.2232 18.6791 29.3594 19.0084 27.2682C20.2575 19.3478 23.2307 19.9856 23.0831 18.4451Z" fill="url(#LogoWithOutText_svg__b)"/>
+    <path d="M18.914 26.831C18.8336 23.4728 17.9732 20.1794 16.4007 17.2111C15.4593 15.3691 14.1745 13.724 12.6156 12.3643C10.3445 10.3052 6.41933 11.0565 6.25846 14.6145C6.16194 16.7607 8.04125 17.6294 9.05566 18.271C10.318 19.0468 11.4599 20.0032 12.4452 21.1098C14.0096 22.8611 15.0715 25.0026 15.5187 27.3079C15.8991 29.4711 19.2849 29.1229 18.914 26.831Z" fill="url(#LogoWithOutText_svg__c)"/>
+    <path d="M24.5742 15.9318C24.342 15.9314 24.1148 16 23.9216 16.1288C23.7283 16.2575 23.5777 16.4408 23.4886 16.6553C23.3996 16.8698 23.3762 17.1058 23.4214 17.3336C23.4666 17.5614 23.5784 17.7707 23.7426 17.9349C23.9068 18.0991 24.1161 18.2109 24.3439 18.2561C24.5717 18.3013 24.8077 18.2779 25.0222 18.1889C25.2367 18.0998 25.4199 17.9491 25.5487 17.7559C25.6775 17.5626 25.7461 17.3355 25.7457 17.1033C25.7457 16.7926 25.6223 16.4946 25.4026 16.2749C25.1829 16.0552 24.8849 15.9318 24.5742 15.9318Z" fill="url(#LogoWithOutText_svg__d)"/>
+  </g>
+  <path d="M24.7172 14.0862C24.6241 13.0986 23.6458 12.7679 22.742 13.1429C21.4842 13.6646 19.6021 15.2998 19.05 15.9124C16.2549 19.036 15.7424 22.1433 15.4932 24.7475C15.244 27.3516 19.297 27.5193 19.7023 24.9454C21.2396 15.1973 24.8989 15.9823 24.7172 14.0862Z" fill="url(#LogoWithOutText_svg__e)"/>
+  <path d="M19.5858 24.4074C19.4869 20.2743 18.4279 16.2208 16.4925 12.5675C15.3338 10.3005 13.7526 8.2757 11.8339 6.60218C9.03873 4.0679 4.20777 4.99264 4.00978 9.37172C3.89098 12.0131 6.20398 13.0823 7.45248 13.8719C9.00608 14.8268 10.4116 16.004 11.6243 17.3659C13.5496 19.5213 14.8566 22.1571 15.407 24.9943C15.8752 27.6567 20.0424 27.2281 19.5858 24.4074Z" fill="url(#LogoWithOutText_svg__f)"/>
+  <path d="M26.5527 10.993C26.2669 10.9925 25.9873 11.0769 25.7495 11.2354C25.5116 11.3939 25.3262 11.6194 25.2166 11.8834C25.107 12.1474 25.0782 12.438 25.1338 12.7183C25.1895 12.9987 25.3271 13.2562 25.5292 13.4583C25.7313 13.6604 25.9888 13.798 26.2692 13.8537C26.5496 13.9093 26.8401 13.8805 27.1041 13.7709C27.3681 13.6613 27.5936 13.4759 27.7521 13.238C27.9106 13.0002 27.995 12.7206 27.9945 12.4348C27.9945 12.0524 27.8426 11.6857 27.5722 11.4153C27.3018 11.1449 26.9351 10.993 26.5527 10.993Z" fill="url(#LogoWithOutText_svg__g)"/>
+  <defs>
+    <filter id="LogoWithOutText_svg__a" x="2.25488" y="7.23264" width="27.4907" height="25.5348" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feGaussianBlur stdDeviation="2" result="effect1_foregroundBlur_7878_103284"/>
+    </filter>
+    <radialGradient id="LogoWithOutText_svg__b" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(17.5095 26.6588) scale(10.3258)">
+      <stop stop-color="#3A78DD"/>
+      <stop offset="1" stop-color="#45B2EE"/>
+    </radialGradient>
+    <radialGradient id="LogoWithOutText_svg__c" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(9.9603 14.2076) scale(18.1156)">
+      <stop stop-color="#6454D6"/>
+      <stop offset="1" stop-color="#3A78DD"/>
+    </radialGradient>
+    <radialGradient id="LogoWithOutText_svg__d" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(25.6492 16.2251) scale(26.9368)">
+      <stop stop-color="#45B2EE"/>
+      <stop offset="1" stop-color="#6454D6"/>
+    </radialGradient>
+    <radialGradient id="LogoWithOutText_svg__e" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(17.8574 24.1954) scale(12.7087)">
+      <stop stop-color="#3A78DD"/>
+      <stop offset="1" stop-color="#45B2EE"/>
+    </radialGradient>
+    <radialGradient id="LogoWithOutText_svg__f" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(8.56589 8.87092) scale(22.2961)">
+      <stop stop-color="#6454D6"/>
+      <stop offset="1" stop-color="#3A78DD"/>
+    </radialGradient>
+    <radialGradient id="LogoWithOutText_svg__g" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(27.8757 11.354) scale(33.153)">
+      <stop stop-color="#45B2EE"/>
+      <stop offset="1" stop-color="#6454D6"/>
+    </radialGradient>
+  </defs>
+</svg>
