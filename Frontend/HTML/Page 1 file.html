@@ -27,13 +27,22 @@
 
         <!-- Buttons -->
         <div class="button-container">
-            
             <button id="signup-btn" class="btn-primary">Sign Up</button>
             <button id="signin-btn" class="btn-secondary">Sign In</button>
         </div>
     </div>
 
     <!-- JS script -->
-    <script src="script.js"></script>
+    <script>
+        // On clicking "Sign In", navigate to the Sign In page
+        document.getElementById("signin-btn").addEventListener("click", function() {
+            window.location.href = "Sign In.html"; // Replace with your actual sign-in page filename
+        });
+
+        // Similarly, if you have a separate sign-up page:
+        document.getElementById("signup-btn").addEventListener("click", function() {
+            window.location.href = "Sign Up.html"; // Replace with your sign-up page filename
+        });
+    </script>
 </body>
 </html>
