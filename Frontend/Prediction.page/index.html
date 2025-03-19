@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flood Prediction Dashboard</title>
+    <link rel="stylesheet" href="flood-style.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <header>
+            <h1>🌊 Flood Prediction System 🌊</h1>
+            <p>Real-time flood risk estimation for the next three hours</p>
+        </header>
+
+        <div class="image-container">
+            <img src="Image/flood_alert.png" alt="Flood Alert Visualization" width="100%">
+        </div>
+
+        <section class="input-section">
+            <h2>Enter Real-Time Data</h2>
+
+            <label for="discharge">🔄 Discharge Rate (cumecs):</label>
+            <input type="number" id="discharge" name="discharge" step="0.01" required>
+
+            <label for="rainfall">🌧️ Rainfall (mm):</label>
+            <input type="number" id="rainfall" name="rainfall" step="0.01" required>
+
+            <label for="waterlevel">📏 Water Level (m):</label>
+            <input type="number" id="waterlevel" name="waterlevel" step="0.01" required>
+        </section>
+
+        <section id="result">
+            <h3>📊 Predicted Water Levels</h3>
+            <div class="prediction-container">
+                <p><strong>Next 1 Hour:</strong> <span id="hour1">--</span></p>
+                <p><strong>Next 2 Hours:</strong> <span id="hour2">--</span></p>
+                <p><strong>Next 3 Hours:</strong> <span id="hour3">--</span></p>
+            </div>
+
+            <h3>⚠️ Flood Alerts</h3>
+            <div class="alert-container">
+                <p><span id="alert1">Waiting for input...</span></p>
+                <p><span id="alert2"></span></p>
+                <p><span id="alert3"></span></p>
+            </div>
+        </section>
+
+        <footer>
+            <p>🚀 Stay Alert, Stay Safe</p>
+        </footer>
+    </div>
+
+</body>
+</html>
