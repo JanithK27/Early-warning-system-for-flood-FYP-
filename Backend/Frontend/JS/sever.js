@@ -13,7 +13,7 @@ app.use(express.json());
 
 // Fake DB (in-memory) - replace with a real database in production
 let users = [];
-
+console.log(users)
 // 1) Sign-Up Endpoint
 app.post("/signup", async (req, res) => {
   try {

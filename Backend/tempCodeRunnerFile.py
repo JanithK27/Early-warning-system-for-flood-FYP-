@@ -4,15 +4,28 @@ import os
 import numpy as np
 import joblib
 from tensorflow.keras.models import load_model
+import json
 
 app = Flask(__name__)
 app.secret_key = "YOUR_SECRET_KEY"  # Session key
 CORS(app)
 
+
+USER_FILE = 'users.json'
+
+def load_users():
+    if os.path.exists(USER_FILE):
+        with open(USER_FILE, 'r') as file:
+            return json.load(file)
+    return {}
+
+def save_users(users):
+    with open(USER_FILE, 'w') as file:
+        json.dump(users, file)
 # ----------------------------------------------------------------
 # (A) In-Memory User Store (DEMO ONLY)
 # ----------------------------------------------------------------
-USERS = {}
+USERS = load_users()
 """
 Structure:
 USERS[email] = {
@@ -69,39 +82,42 @@ def serve_html_files(filename):
 # ----------------------------------------------------------------
 # (D) Sign Up
 # ----------------------------------------------------------------
-@app.route("/signup", methods=["POST"])
+@app.route("/signup", methods=["GET", "POST"])
 def signup():
-    """
-    Handles sign-up form submission from SignUp.html (method="POST", action="/signup").
-    Stores new user in USERS, logs them in, redirects to index.html.
-    """
-    data = request.form
-    full_name = data.get("fullName")
-    email = data.get("email")
-    phone = data.get("phone")
-    address = data.get("address")
-    location = data.get("location")
-    password = data.get("password")
-    confirm_password = data.get("confirmPassword")
+    if request.method == "POST":
+        data = request.form
+        full_name = data.get("fullName")
+        email = data.get("email")
+        phone = data.get("phone")
+        address = data.get("address")
+        location = data.get("location")
+        password = data.get("password")
+        confirm_password = data.get("confirmPassword")
 
-    # Basic validation
-    if password != confirm_password:
-        return "Passwords do not match! <a href='/Frontend/HTML/SignUp.html'>Go Back</a>"
-    if email in USERS:
-        return "User already exists! <a href='/Frontend/HTML/SignIn.html'>Sign In</a>"
+        # Basic validation
+        if password != confirm_password:
+            return "Passwords do not match! <a href='/Frontend/HTML/SignUp.html'>Go Back</a>"
+        if email in USERS:
+            return "User already exists! <a href='/Frontend/HTML/SignIn.html'>Sign In</a>"
 
-    USERS[email] = {
-        'full_name': full_name,
-        'phone': phone,
-        'address': address,
-        'location': location,
-        'password': password
-    }
+        # Save user data
+        USERS[email] = {
+            'full_name': full_name,
+            'phone': phone,
+            'address': address,
+            'location': location,
+            'password': password
+        }
 
-    # Log the user in (store email in session)
-    session["email"] = email
-    # Redirect to index.html (dashboard)
-    return redirect("/index.html")
+        # Start session
+        session["email"] = email
+
+        # Redirect to dashboard
+        return redirect("/index.html")
+
+    # If GET request, just serve the signup page
+    return send_from_directory(os.path.join(app.root_path, "Frontend", "HTML"), "SignUp.html")
+
 
 @app.route("/Frontend/HTML/SignUp.html")
 def signup_page():
@@ -113,14 +129,7 @@ def signup_page():
 # ----------------------------------------------------------------
 @app.route("/signin", methods=["POST"])
 def signin():
-    """
-    Expects JSON from SignIn.html fetch: { email, password }
-    If valid => session['email'] = email => front-end then goes to index.html.
-    """
     data = request.get_json()
-    if not data:
-        return jsonify({"success": False, "message": "No JSON in request."})
-
     email = data.get("email")
     password = data.get("password")
 
@@ -130,6 +139,7 @@ def signin():
         return jsonify({"success": True})
     else:
         return jsonify({"success": False, "message": "Invalid credentials."})
+
 
 @app.route("/Frontend/HTML/SignIn.html")
 def signin_page():
@@ -158,13 +168,43 @@ def google_signin():
 # ----------------------------------------------------------------
 @app.route("/index.html")
 def dashboard():
-    """
-    Serve index.html if logged in.
-    If not logged in => redirect to welcome.html.
-    """
     if "email" not in session:
-        return redirect("/Frontend/HTML/welcome.html")
+        return redirect("/")
     return send_from_directory(os.path.join(app.root_path), "index.html")
+
+    # predictions = None
+    # alerts = None
+    # discharge = rainfall = waterlevel = None
+
+    # if request.method == "POST":
+    #     discharge = request.form.get('discharge')
+    #     rainfall = request.form.get('rainfall')
+    #     waterlevel = request.form.get('waterlevel')
+
+    #     try:
+    #         discharge_f = float(discharge)
+    #         rainfall_f = float(rainfall)
+    #         waterlevel_f = float(waterlevel)
+
+    #         X = np.array([[discharge_f, rainfall_f, waterlevel_f]])
+    #         X_scaled = scaler_X.transform(X)
+    #         X_reshaped = X_scaled.reshape((1, 1, X_scaled.shape[1]))
+
+    #         preds = model.predict(X_reshaped)[0].tolist()
+    #         predictions = [round(p, 2) for p in preds]
+    #         alerts = [generate_alert_message(p) for p in preds]
+
+    #     except Exception as e:
+    #         predictions = ["Error"] * 3
+    #         alerts = [str(e)] * 3
+
+    # return render_template("index.html",
+    #                        predictions=predictions,
+    #                        alerts=alerts,
+    #                        discharge=discharge,
+    #                        rainfall=rainfall,
+    #                        waterlevel=waterlevel)
+
 
 # ----------------------------------------------------------------
 # (H) Logout

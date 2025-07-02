@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, session, redirect, send_from_directory, url_for
+from flask import Flask, request, jsonify, session, redirect, send_from_directory, url_for, render_template
 from flask_cors import CORS
 import os
 import numpy as np
@@ -51,7 +51,7 @@ def serve_css(filename):
     """Serve your CSS files from Frontend/CSS folder."""
     return send_from_directory(os.path.join(app.root_path, "Frontend", "CSS"), filename)
 
-@app.route("/images/<path:filename>")
+@app.route("/Images/<path:filename>")
 def serve_images(filename):
     """Serve images if needed from some images/ folder."""
     return send_from_directory(os.path.join(app.root_path, "Frontend", "HTML", "Images"), filename)
@@ -103,7 +103,7 @@ def signup():
     # Redirect to index.html (dashboard)
     return redirect("/index.html")
 
-@app.route("/Frontend/HTML/SignUp.html")
+@app.route("/SignUp.html")
 def signup_page():
     """Serves the SignUp.html page via GET."""
     return send_from_directory(os.path.join(app.root_path, "Frontend", "HTML"), "SignUp.html")
@@ -131,10 +131,16 @@ def signin():
     else:
         return jsonify({"success": False, "message": "Invalid credentials."})
 
-@app.route("/Frontend/HTML/SignIn.html")
+@app.route("/SignIn.html")
 def signin_page():
-    """Serves the SignIn.html page."""
     return send_from_directory(os.path.join(app.root_path, "Frontend", "HTML"), "SignIn.html")
+
+
+@app.route("/Frontend/HTML/index.html")
+def redirect_legacy_index():
+    return redirect("/index.html")
+
+
 
 # ----------------------------------------------------------------
 # (F) Google Sign-In (DEMO)
@@ -156,15 +162,46 @@ def google_signin():
 # ----------------------------------------------------------------
 # (G) Dashboard (index.html)
 # ----------------------------------------------------------------
-@app.route("/index.html")
+@app.route("/index.html", methods=["GET", "POST"])
 def dashboard():
-    """
-    Serve index.html if logged in.
-    If not logged in => redirect to welcome.html.
-    """
     if "email" not in session:
         return redirect("/Frontend/HTML/welcome.html")
-    return send_from_directory(os.path.join(app.root_path), "index.html")
+
+    # Always define these variables before the POST block
+    discharge_rate = None
+    rainfall = None
+    water_level = None
+    predictions = None
+    alerts = None
+
+    if request.method == "POST":
+        try:
+            discharge_rate = float(request.form.get("discharge"))
+            rainfall = float(request.form.get("rainfall"))
+            water_level = float(request.form.get("waterlevel"))
+
+            print("Received Data:", discharge_rate, rainfall, water_level)
+
+            # Replace with actual prediction logic
+            input_features = np.array([[discharge_rate, rainfall, water_level]])
+            input_scaled = scaler_X.transform(input_features)
+
+            # Reshape to (samples=1, time_steps=1, features=3)
+            input_reshaped = input_scaled.reshape((1, 1, input_scaled.shape[1]))
+
+            # Predict water levels
+            predictions = model.predict(input_reshaped)[0].tolist()
+            alerts = [generate_alert_message(p) for p in predictions]
+
+        except Exception as e:
+            print("Error during prediction:", e)
+
+    return render_template("index.html",
+                           discharge=discharge_rate,
+                           rainfall=rainfall,
+                           waterlevel=water_level,
+                           predictions=predictions,
+                           alerts=alerts)
 
 # ----------------------------------------------------------------
 # (H) Logout
@@ -176,38 +213,6 @@ def logout():
     """
     session.clear()
     return redirect("/Frontend/HTML/welcome.html")
-
-# ----------------------------------------------------------------
-# (I) Predict (LSTM)
-# ----------------------------------------------------------------
-@app.route("/predict", methods=["POST"])
-def predict():
-    """Flood prediction, requires user to be logged in."""
-    if "email" not in session:
-        return jsonify({"error": "Unauthorized user. Please sign in."}), 401
-    try:
-        data = request.json
-        discharge_rate = float(data['discharge_rate'])
-        rainfall = float(data['rainfall'])
-        water_level = float(data['water_level'])
-
-        X = np.array([[discharge_rate, rainfall, water_level]])
-        X_scaled = scaler_X.transform(X)
-        X_reshaped = X_scaled.reshape((1, 1, X_scaled.shape[1]))
-
-        preds = model.predict(X_reshaped)[0].tolist()
-        alerts = [generate_alert_message(p) for p in preds]
-
-        return jsonify({
-            "Next 1 Hour Water Level": preds[0],
-            "Next 2 Hours Water Level": preds[1],
-            "Next 3 Hours Water Level": preds[2],
-            "Alert 1": alerts[0],
-            "Alert 2": alerts[1],
-            "Alert 3": alerts[2]
-        })
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)
