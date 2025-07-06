@@ -242,7 +242,18 @@ def get_latest_weather_data(latitude=6.6858, longitude=80.4036):
     }
 
 
-# (G) Dashboard (index.html)
+# (G) Dashboard 
+
+def runModel(discharge_rate, rainfall_IN, water_level):
+    # Replace with actual prediction logic
+    input_features = np.array([[discharge_rate, rainfall_IN, water_level]])
+    input_scaled = scaler_X.transform(input_features)
+        # Reshape to (samples=1, time_steps=1, features=3)
+    input_reshaped = input_scaled.reshape((1, 1, input_scaled.shape[1]))
+        # Predict water levels
+    predictions = model.predict(input_reshaped)[0].tolist()
+    
+    return predictions
 
 @app.route("/index.html", methods=["GET", "POST"])
 def dashboard():
@@ -252,6 +263,7 @@ def dashboard():
     discharge = rainfall = waterlevel = None
     predictions = None
     alerts = None
+    alerts = []
     # Get live data from API
     try:
         live_data = get_latest_water_level("I97")
@@ -261,7 +273,8 @@ def dashboard():
         location = live_data["location"]
         recorded_time = live_data["time"]
         #discharge =  ((10.034 *(live_data["level"])**2) - (90.809*live_data["level"]) + 419.1)
-        discharge = ((0.1864 * (live_data["level"])**3) + (1.4103 * (live_data["level"])**2) + (15.63 * live_data["level"]) + 8.2621) #use all data to create equation
+        discharge_eq = ((0.1864 * (waterlevel)**3) + (1.4103 * (waterlevel)**2) + (15.63 * waterlevel) + 8.2621) #use all data to create equation
+        discharge = round(discharge_eq, 3)
         
         #Get live rainfall data from Open-Meteo
         weather = get_latest_weather_data()  # Uses the latitude and longitude you set
@@ -269,21 +282,28 @@ def dashboard():
             rainfall = "0.0"
         else:
             rainfall = weather["current_rain"]
-            
-        print(rainfall)
-        discharge_rate = float(request.form.get("discharge"))
-        rainfall_IN = float(request.form.get("rainfall_1"))
-        water_level = float(request.form.get("waterlevel"))
-        print("Received Data:", discharge_rate, rainfall_IN, water_level)
         
-        # Replace with actual prediction logic
-        input_features = np.array([[discharge_rate, rainfall_IN, water_level]])
-        input_scaled = scaler_X.transform(input_features)
-        # Reshape to (samples=1, time_steps=1, features=3)
-        input_reshaped = input_scaled.reshape((1, 1, input_scaled.shape[1]))
-        # Predict water levels
-        predictions = model.predict(input_reshaped)[0].tolist()
-        alerts = [generate_alert_message(p) for p in predictions]
+        
+            
+        # print(rainfall)# Get form values
+        discharge_rate = request.form.get("discharge")
+        rainfall_IN = request.form.get("rainfall")
+        water_level = request.form.get("waterlevel")
+
+            # Debug print statements
+        print(f"Discharge Rate: {discharge_rate}")
+        print(f"Rainfall: {rainfall_IN}")
+        print(f"Water Level: {water_level}")
+        # print("Received Data:", discharge_rate, rainfall_IN, water_level)    
+        
+        predictions = runModel(discharge_rate, rainfall_IN, water_level)
+        
+        # Generate alerts based on the predictions
+        for pred in predictions:
+            alert_message = generate_alert_message(pred)
+            alerts.append(alert_message) 
+        
+       
         
     except Exception as e:
         print("Error fetching live water level:", e) # try and except. 
