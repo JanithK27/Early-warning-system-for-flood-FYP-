@@ -227,7 +227,7 @@ def dashboard():
         rainfall = float(request.form.get("rainfall"))
         water_level = float(request.form.get("waterlevel"))
         print("Received Data:", discharge_rate, rainfall, water_level)
-        
+ 
         # Replace with actual prediction logic
         input_features = np.array([[discharge_rate, rainfall, water_level]])
         input_scaled = scaler_X.transform(input_features)
