@@ -6,6 +6,11 @@ import joblib
 from tensorflow.keras.models import load_model
 import requests
 
+import openmeteo_requests
+import requests_cache
+from retry_requests import retry
+import pandas as pd
+
 
 app = Flask(__name__)
 app.secret_key = "YOUR_SECRET_KEY"  # Session key
@@ -188,9 +193,57 @@ def get_latest_water_level(device_id="I97"):
     data_response.raise_for_status()
     return data_response.json()["results"]
 
-# ----------------------------------------------------------------
+# Get weather API
+
+def get_latest_weather_data(latitude=6.6858, longitude=80.4036):
+    # Setup Open-Meteo client with cache and retry
+    
+    cache_session = requests_cache.CachedSession('.cache', expire_after=3600)
+    retry_session = retry(cache_session, retries=5, backoff_factor=0.2)
+    openmeteo = openmeteo_requests.Client(session=retry_session)
+
+    # API parameters
+    weather_url = "https://api.open-meteo.com/v1/forecast"
+    weather_params = {
+        "latitude": latitude,
+        "longitude": longitude,
+        "hourly": ["temperature_2m", "rain"],
+        "current": "rain"
+    }
+
+    # Call the API
+    responses = openmeteo.weather_api(weather_url, params=weather_params)
+    response = responses[0]
+
+    # Extract current rain
+    current_rain = response.Current().Variables(0).Value()
+    
+    # Extract hourly data
+    hourly = response.Hourly()
+    hourly_temperature = hourly.Variables(0).ValuesAsNumpy()
+    hourly_rain = hourly.Variables(1).ValuesAsNumpy()
+    timestamps = pd.date_range(
+        start=pd.to_datetime(hourly.Time(), unit="s", utc=True),
+        end=pd.to_datetime(hourly.TimeEnd(), unit="s", utc=True),
+        freq=pd.Timedelta(seconds=hourly.Interval()),
+        inclusive="left"
+    )
+
+    # Return as DataFrame
+    weather_df = pd.DataFrame({
+        "timestamp": timestamps,
+        "temperature_2m": hourly_temperature,
+        "rain": hourly_rain
+    })
+
+    return {
+        "current_rain": current_rain,
+        "hourly_weather": weather_df
+    }
+
+
 # (G) Dashboard (index.html)
-# ----------------------------------------------------------------
+
 @app.route("/index.html", methods=["GET", "POST"])
 def dashboard():
     if "email" not in session:
@@ -209,15 +262,22 @@ def dashboard():
         recorded_time = live_data["time"]
         #discharge =  ((10.034 *(live_data["level"])**2) - (90.809*live_data["level"]) + 419.1)
         discharge = ((0.1864 * (live_data["level"])**3) + (1.4103 * (live_data["level"])**2) + (15.63 * live_data["level"]) + 8.2621) #use all data to create equation
-        rainfall = (live_data["level"] * 5)
         
+        #Get live rainfall data from Open-Meteo
+        weather = get_latest_weather_data()  # Uses the latitude and longitude you set
+        if weather["current_rain"] == 0.0:
+            rainfall = "0.0"
+        else:
+            rainfall = weather["current_rain"]
+            
+        print(rainfall)
         discharge_rate = float(request.form.get("discharge"))
-        rainfall = float(request.form.get("rainfall"))
+        rainfall_IN = float(request.form.get("rainfall_1"))
         water_level = float(request.form.get("waterlevel"))
-        print("Received Data:", discharge_rate, rainfall, water_level)
+        print("Received Data:", discharge_rate, rainfall_IN, water_level)
         
         # Replace with actual prediction logic
-        input_features = np.array([[discharge_rate, rainfall, water_level]])
+        input_features = np.array([[discharge_rate, rainfall_IN, water_level]])
         input_scaled = scaler_X.transform(input_features)
         # Reshape to (samples=1, time_steps=1, features=3)
         input_reshaped = input_scaled.reshape((1, 1, input_scaled.shape[1]))
@@ -226,9 +286,9 @@ def dashboard():
         alerts = [generate_alert_message(p) for p in predictions]
         
     except Exception as e:
-        print("Error fetching live water level:", e)
+        print("Error fetching live water level:", e) # try and except. 
         live_data = None
-        alert = alert_desc = location = recorded_time = None
+        alert = alert_desc = None
 
     return render_template("index.html",
                            discharge=discharge,
@@ -241,64 +301,6 @@ def dashboard():
                            predictions=predictions,
                            alerts = alerts
                         ) 
-# def dashboard():
-#     if "email" not in session:
-#         return redirect("/Frontend/HTML/welcome.html")
-
-#     # Always define these variables before the POST block
-#     discharge_rate = None
-#     rainfall = None
-#     water_level = None
-#     predictions = None
-#     alerts = None
-    
-
-#     if request.method == "POST":
-#         try:
-#             live_data = get_latest_water_level("I97")
-#             waterlevel = live_data["level"]
-#             alert = live_data["alert"]
-#             alert_desc = live_data["alert_description"]
-#             location = live_data["location"]
-#             recorded_time = live_data["time"]
-#             discharge_rate = float(request.form.get("discharge"))
-#             rainfall = float(request.form.get("rainfall"))
-#             water_level = float(request.form.get("waterlevel"))
-
-#             print("Received Data:", discharge_rate, rainfall, water_level)
-
-#             # Replace with actual prediction logic
-#             input_features = np.array([[discharge_rate, rainfall, water_level]])
-#             input_scaled = scaler_X.transform(input_features)
-
-#             # Reshape to (samples=1, time_steps=1, features=3)
-#             input_reshaped = input_scaled.reshape((1, 1, input_scaled.shape[1]))
-
-#             # Predict water levels
-#             predictions = model.predict(input_reshaped)[0].tolist()
-#             alerts = [generate_alert_message(p) for p in predictions]
-
-#         except Exception as e:
-#             print("Error fetching live water level:", e)
-#             live_data = None
-#             alert = alert_desc = location = recorded_time = None
-
-#     # return render_template("index.html",
-#     #                        discharge=discharge_rate,
-#     #                        rainfall=rainfall,
-#     #                        waterlevel=water_level,
-#     #                        predictions=predictions,
-#     #                        alerts=alerts)
-    
-#     return render_template("index.html",
-#                            discharge=discharge_rate,
-#                            rainfall=rainfall,
-#                            waterlevel=water_level,
-#                            alert_desc=alert_desc,
-#                            location=location,
-#                            recorded_time=recorded_time,
-#                            predictions=predictions,
-#                            alerts=alerts)
 
 # ----------------------------------------------------------------
 # (H) Logout
