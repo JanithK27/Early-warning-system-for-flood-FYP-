@@ -4,16 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sign Up</title>
-  <link rel="stylesheet" href="/Frontend/CSS/Sign Up-style.css" />
+  <link rel="stylesheet" href="/Frontend/CSS/SignUpStyle.css" />
 </head>
 <body>
   <div class="signup-container">
     <header>
-      <button class="back-button" onclick="window.location.href='Page 1 file.html'">←</button>
+      <button class="back-button" onclick="window.location.href='welcome.html'">←</button>
       <h1>Sign Up</h1>
     </header>
 
-    <form id="signup-form">
+    <!-- Form with method=POST action=/signup -->
+    <form id="signup-form" action="/signup" method="POST">
       <div class="form-group">
         <label for="full-name">Full Name</label>
         <input type="text" id="full-name" name="fullName" placeholder="Full Name" required/>
@@ -57,10 +58,8 @@
     </form>
 
     <p class="signin-link">
-      Have an account? <a href="Sign In.html">Sign In</a>
+      Have an account? <a href="SignIn.html">Sign In</a>
     </p>
   </div>
-
-  <script src="Sign Up-script.js"></script>
 </body>
 </html>
