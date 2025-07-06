@@ -44,6 +44,11 @@
                 </button>
             </form>
         </section>
+        
+        <h2>🌊 Live Water Level Data</h2>
+        <p><strong>Location:</strong> {{ location }}</p>
+        <p><strong>Water Level:</strong> {{ waterlevel }} m</p>
+        <p><strong>Recorded Time:</strong> {{ recorded_time }}</p>
 
         {% if predictions %}
         <section id="result">
@@ -55,11 +60,13 @@
             </div>
 
             <h3>⚠️ Flood Alerts</h3>
-            <div class="alert-container">
-                <p>{{ alerts[0] }}</p>
-                <p>{{ alerts[1] }}</p>
-                <p>{{ alerts[2] }}</p>
+            <div class="prediction-container">
+                <p><strong>Next 1 Hour:</strong> {{ alerts[0] }}</p>
+                <p><strong>Next 2 Hours:</strong> {{ alerts[1] }}</p>
+                <p><strong>Next 3 Hours:</strong> {{ alerts[2] }}</p>
             </div>
+
+
         </section>
         {% endif %}
 
