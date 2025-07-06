@@ -44,18 +44,6 @@ def generate_alert_message(water_level):
     else:
         return "✅ No flood risk at the moment. Stay safe!." 
     
-# def generate_alert_message(water_level):
-#     if water_level >= 10.5:
-#         return "🚨 Critical Flood Alert: Immediate evacuation recommended!"
-#     elif water_level >= 9.5:
-#         return "⚠️ Major Flood Alert: Severe flooding expected. Prepare for evacuation."
-#     elif water_level >= 7.5: 
-#         return "🟠 Minor Flood Alert: Flooding expected. Stay alert and monitor updates."
-#     elif water_level >= 5.2:
-#         return "🟡 Flood Alert: Flood is likely to occur. Take necessary precautions!"
-#     else:
-#         return "✅ No immediate flood threat detected."
-
 # ----------------------------------------------------------------
 # (C) Serve Static HTML & CSS
 # ----------------------------------------------------------------
