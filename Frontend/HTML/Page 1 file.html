@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FloodGuard</title>
+    <link rel="stylesheet" href="/Frontend/CSS/Page 1 style.css">
+</head>
+<body>
+
+    <!-- Welcome Page Content -->
+    <div class="welcome-page">
+        <!-- Top Message -->
+        <div class="top-message">
+            <p>Stay informed stay safe.<br>Monitor updates regularly!</p>
+        </div>
+
+        <!-- Logo -->
+        <div class="logo-container">
+            <img src="images/FloodGuard.png" alt="FloodGuard Logo" class="logo">
+        </div>
+
+        <!-- Welcome Text -->
+        <div class="welcome-text">
+            <h1>WELCOME to FloodGuard</h1>
+        </div>
+
+        <!-- Buttons -->
+        <div class="button-container">
+            <button id="signup-btn" class="btn-primary">Sign Up</button>
+            <button id="signin-btn" class="btn-secondary">Sign In</button>
+        </div>
+    </div>
+
+    <!-- JS script -->
+    <script>
+        // On clicking "Sign In", navigate to the Sign In page
+        document.getElementById("signin-btn").addEventListener("click", function() {
+            window.location.href = "Sign In.html"; // Replace with your actual sign-in page filename
+        });
+
+        // Similarly, if you have a separate sign-up page:
+        document.getElementById("signup-btn").addEventListener("click", function() {
+            window.location.href = "Sign Up.html"; // Replace with your sign-up page filename
+        });
+    </script>
+</body>
+</html>
