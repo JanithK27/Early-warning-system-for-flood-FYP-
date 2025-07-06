@@ -252,7 +252,7 @@ def dashboard():
                            recorded_time=recorded_time,
                            predictions=predictions,
                            alerts = alerts
-                        )
+                        ) 
 # def dashboard():
 #     if "email" not in session:
 #         return redirect("/Frontend/HTML/welcome.html")
