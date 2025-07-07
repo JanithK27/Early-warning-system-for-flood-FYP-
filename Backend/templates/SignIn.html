@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+
+      <!-- Tabs -->
+      <div class="card shadow">
+        <div class="card-header bg-light text-center">
+          <div class="btn-group w-100" role="group">
+            <button id="show-signin" class="btn btn-outline-primary active-tab" type="button">Sign In</button>
+            <button id="show-signup" class="btn btn-outline-primary" type="button">Sign Up</button>
+          </div>
+        </div>
+
+        <div class="card-body">
+
+          <!-- Sign In Section -->
+          <div id="signin-section">
+            <h4 class="text-center mb-4">Welcome Back!</h4>
+            <form action="/signin" method="POST">
+              <div class="mb-3">
+                <label for="signin-email" class="form-label">Email</label>
+                <input type="email" id="signin-email" name="email" class="form-control" placeholder="Email" required>
+              </div>
+              <div class="mb-3">
+                <label for="signin-password" class="form-label">Password</label>
+                <input type="password" id="signin-password" name="password" class="form-control" placeholder="Password" required>
+              </div>
+              <div class="d-grid mb-2">
+                <button type="submit" class="btn btn-primary">Sign In</button>
+              </div>
+              <div class="text-center">
+                <a href="Reset Password.html" class="small">Forgot Password?</a>
+              </div>
+            </form>
+          </div>
+
+          <!-- Sign Up Section -->
+          <div id="signup-section" style="display: none;">
+            <h4 class="text-center mb-4">Create a New Account</h4>
+            <form id="signup-form" action="/signup" method="POST">
+              <div class="mb-3">
+                <label for="full-name" class="form-label">Full Name</label>
+                <input type="text" id="full-name" name="fullName" class="form-control" placeholder="Full Name" required>
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="Email" required>
+              </div>
+              <div class="mb-3">
+                <label for="phone" class="form-label">Phone</label>
+                <input type="tel" id="phone" name="phone" class="form-control" placeholder="Phone" required>
+              </div>
+              <div class="mb-3">
+                <label for="address" class="form-label">Home Address</label>
+                <input type="text" id="address" name="address" class="form-control" placeholder="Home Address" required>
+              </div>
+              <div class="mb-3">
+                <label for="location" class="form-label">Select Location</label>
+                <select id="location" name="location" class="form-select" required>
+                  <option value="">Select Location</option>
+                  <option value="area1">Area 1</option>
+                  <option value="area2">Area 2</option>
+                  <option value="area3">Area 3</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+              </div>
+              <div class="mb-3">
+                <label for="confirm-password" class="form-label">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirmPassword" class="form-control" placeholder="Confirm Password" required>
+              </div>
+              <div class="d-grid">
+                <button type="submit" class="btn btn-success">Sign Up</button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- JS for toggling between Sign In and Sign Up -->
+<script>
+  const signinTab = document.getElementById("show-signin");
+  const signupTab = document.getElementById("show-signup");
+  const signinSection = document.getElementById("signin-section");
+  const signupSection = document.getElementById("signup-section");
+
+  signinTab.addEventListener("click", () => {
+    signinSection.style.display = "block";
+    signupSection.style.display = "none";
+    signinTab.classList.add("active-tab");
+    signupTab.classList.remove("active-tab");
+  });
+
+  signupTab.addEventListener("click", () => {
+    signinSection.style.display = "none";
+    signupSection.style.display = "block";
+    signupTab.classList.add("active-tab");
+    signinTab.classList.remove("active-tab");
+  });
+</script>
+
+<style>
+  .active-tab {
+    background-color: #0d6efd !important;
+    color: white !important;
+  }
+</style>
+
+{% endblock %}

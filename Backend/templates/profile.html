@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">👤 User Profile</h4>
+                </div>
+                <div class="card-body">
+                    <p class="mb-2"><strong>Full Name:</strong> {{ user.full_name }}</p>
+                    <p class="mb-2"><strong>Email:</strong> {{ email }}</p>
+                    <p class="mb-2"><strong>Phone:</strong> {{ user.phone }}</p>
+                    <p class="mb-2"><strong>Address:</strong> {{ user.address }}</p>
+                    <p class="mb-4"><strong>Location:</strong> {{ user.location }}</p>
+
+                    <div class="text-center">
+                        <a href="/logout" class="btn btn-outline-danger">🚪 Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,89 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flood Prediction Dashboard</title>
-    <link rel="stylesheet" href="Frontend/CSS/index.css">
-</head>
-<body>
-    <div class="dashboard-container">
-        <header>
-            <h1>🌊 Flood Prediction System 🌊</h1>
-            <p>Real-time flood risk estimation for the next three hours</p>
-        </header>
+{% extends "base.html" %}
+{% block content %}
 
-        <!-- Logout Button -->
-        <div style="text-align: right;">
-            <form action="/logout" method="get">
-                <button style="background-color: #ff0066; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer;">
-                    Logout
-                </button>
-            </form>
+<div class="container my-5">
+    <header class="row">
+        <div class="text-center">
+            <h1 class="display-5"> Manual Prediction </h1>
+            <p class="lead">🌊Flood risk estimation for the next three hours🌊</p>
+            <hr>
         </div>
 
-        <div class="image-container">
-            <img src="/Frontend/HTML/Images/flood_alert.png" alt="Flood Alert Visualization" width="25%">
-        </div>
-
-        <section class="input-section">
-            <h2>Enter Real-Time Data</h2>
-
-            <form id="realtime-form" action="/index.html" method="POST">
-                <label for="discharge">🔄 Discharge Rate (cumecs):</label>
-                <input type="number" id="discharge" name="discharge" step="0.01" required value="{{ discharge or '' }}">
-
-                <label for="rainfall_1">🌧️ Rainfall (mm):</label>
-                <input type="number" id="rainfall_1" name="rainfall" step="0.01" required value="{{ rainfall or '' }}">
-
-                <label for="waterlevel">📏 Water Level (m):</label>
-                <input type="number" id="waterlevel" name="waterlevel" step="0.01" required value="{{ waterlevel or '' }}">
-
-                <button type="submit" style="margin-top: 10px; padding: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                    Submit
-                </button>
-            </form>
-        </section>
-
-        <script>
-            const form = document.getElementById('realtime-form');
-            const inputs = form.querySelectorAll('input');
-
-            inputs.forEach(input => {
-                input.addEventListener('change', () => {
-                    form.submit();
-                });
-            });
-        </script>
         
-        <h2>🌊 Live Water Level Data</h2>
+    </header>
+
+    <section class="mb-3">
+        <h2 class="h4 mb-2">Enter Custom Data</h2>
+
+        <form id="realtime-form" action="/index" method="POST" class="row g-3 mt-2">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="discharge" class="form-label">🔄 Discharge Rate (cumecs):</label>
+                    <input type="number" class="form-control" id="discharge" name="discharge" step="0.01" required value="{{ discharge or '' }}">
+                </div>
+
+                <div class="col-md-4">
+                    <label for="rainfall_1" class="form-label">🌧️ Rainfall (mm):</label>
+                    <input type="number" class="form-control" id="rainfall_1" name="rainfall" step="0.01" required value="{{ rainfall or '' }}">
+                </div>
+
+                <div class="col-md-4">
+                    <label for="waterlevel" class="form-label">📏 Water Level (m):</label>
+                    <input type="number" class="form-control" id="waterlevel" name="waterlevel" step="0.01" required value="{{ waterlevel or '' }}">
+                </div>
+            </div>
+            
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary mt-1 pt-2 pb-2 ps-4 pe-4">Submit</button>
+            </div>
+        </form>
+    </section>
+
+    
+
+    {% if predictions %}
+    <section id="result" class="mb-5">
+        <div class="row">
+            <!-- Prediction Card -->
+            <div class="col-md-6 mb-4">
+                <div class="card border-primary">
+                    <div class="card-header bg-primary text-white">📊 Predicted Water Levels</div>
+                    <div class="card-body">
+                        <p><strong>Next 1 Hour:</strong> {{ predictions[0] }}</p>
+                        <p><strong>Next 2 Hours:</strong> {{ predictions[1] }}</p>
+                        <p><strong>Next 3 Hours:</strong> {{ predictions[2] }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alert Card -->
+            <div class="col-md-6 mb-4">
+                <div class="card border-danger">
+                    <div class="card-header bg-danger text-white">⚠️ Flood Alerts</div>
+                    <div class="card-body">
+                        <p><strong>Next 1 Hour:</strong> {{ alerts[0] }}</p>
+                        <p><strong>Next 2 Hours:</strong> {{ alerts[1] }}</p>
+                        <p><strong>Next 3 Hours:</strong> {{ alerts[2] }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+
+    <section class="mb-5">
+        <h2 class="h4">🌊 Live Water Level Data</h2>
         <p><strong>Location:</strong> {{ location }}</p>
         <p><strong>Water Level:</strong> {{ waterlevel }} m</p>
+        <p><strong>Rainfall:</strong> {{ rainfall }} mm</p>
         <p><strong>Recorded Time:</strong> {{ recorded_time }}</p>
+    </section>
 
-        {% if predictions %}
-        <section id="result">
-            <h3>📊 Predicted Water Levels</h3>
-            <div class="prediction-container">
-                <p><strong>Next 1 Hour:</strong> {{ predictions[0] }}</p>
-                <p><strong>Next 2 Hours:</strong> {{ predictions[1] }}</p>
-                <p><strong>Next 3 Hours:</strong> {{ predictions[2] }}</p>
-            </div>
+    <footer class="text-center mt-4">
+        <p class="text-muted">🚀 Stay Alert, Stay Safe</p>
+    </footer>
+</div>
 
-            <h3>⚠️ Flood Alerts</h3>
-            <div class="prediction-container">
-                <p><strong>Next 1 Hour:</strong> {{ alerts[0] }}</p>
-                <p><strong>Next 2 Hours:</strong> {{ alerts[1] }}</p>
-                <p><strong>Next 3 Hours:</strong> {{ alerts[2] }}</p>
-            </div>
-
-
-        </section>
-        {% endif %}
-
-        <footer>
-            <p>🚀 Stay Alert, Stay Safe</p>
-        </footer>
-    </div>
-</body>
-</html>
+{% endblock %}
