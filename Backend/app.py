@@ -66,7 +66,59 @@ def serve_images(filename):
 # Serve welcome.html as the root
 @app.route("/")
 def home():
-    return send_from_directory(os.path.join(app.root_path, "Frontend", "HTML"), "welcome.html")
+    discharge = rainfall = waterlevel = None
+    predictions_home = None
+    alerts = None
+    alerts = []
+    # Get live data from API
+    try:
+        live_data = get_latest_water_level("I97")
+        print("Live Data:", live_data) 
+        waterlevel = live_data["level"]
+        alert = live_data["alert"] 
+        alert_desc = live_data["alert_description"]
+        location = live_data["location"]
+        recorded_time = live_data["time"]
+        #discharge =  ((10.034 *(live_data["level"])**2) - (90.809*live_data["level"]) + 419.1)
+        discharge_eq = ((0.1864 * (waterlevel)**3) + (1.4103 * (waterlevel)**2) + (15.63 * waterlevel) + 8.2621) #use all data to create equation
+        discharge = round(discharge_eq, 3)
+        
+        #Get live rainfall data from Open-Meteo
+        weather = get_latest_weather_data()  # Uses the latitude and longitude you set
+        if weather["current_rain"] == 0.0:
+            rainfall = "0.0"
+        else:
+            rainfall = weather["current_rain"]
+        
+        
+        predictions_home = runModel(discharge, rainfall, waterlevel)
+        
+        # Generate alerts based on the predictions
+        for pred_h in predictions_home:
+            alert_message = generate_alert_message(pred_h)
+            alerts.append(alert_message) 
+        
+       
+        
+    except Exception as e:
+        print("Error fetching live water level:", e) # try and except. 
+        live_data = None
+        alert = alert_desc = None
+    name = session.get("name", "User")
+    return render_template("welcome.html",
+                           discharge=discharge,
+                           rainfall=rainfall,
+                           waterlevel=waterlevel,
+                           alert=alert,
+                           alert_desc=alert_desc,
+                           location=location,
+                           recorded_time=recorded_time,
+                           predictions=predictions_home,
+                           alerts = alerts,
+                           name=name
+
+                        ) 
+
 
 @app.route("/Frontend/HTML/<path:filename>")
 def serve_html_files(filename):
@@ -108,7 +160,7 @@ def signup():
     # Log the user in (store email in session)
     session["email"] = email
     # Redirect to index.html (dashboard)
-    return redirect("/index.html")
+    return redirect("/")
 
 @app.route("/SignUp.html")
 def signup_page():
@@ -118,34 +170,35 @@ def signup_page():
 # ----------------------------------------------------------------
 # (E) Sign In
 # ----------------------------------------------------------------
-@app.route("/signin", methods=["POST"])
+@app.route("/signin", methods=["GET", "POST"])
 def signin():
     """
-    Expects JSON from SignIn.html fetch: { email, password }
-    If valid => session['email'] = email => front-end then goes to index.html.
+    Handles both GET and POST requests for the sign-in process.
+    - GET: Renders the login/signup page.
+    - POST: Handles form submission with form data (not JSON).
     """
-    data = request.get_json()
-    if not data:
-        return jsonify({"success": False, "message": "No JSON in request."})
+    if request.method == "GET":
+        return render_template("SignIn.html")  # Ensure this template includes both tabs
 
-    email = data.get("email")
-    password = data.get("password")
+    # POST: Handle form data
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+    if not email or not password:
+        return "Missing email or password. <a href='/signin'>Go back</a>"
 
     user = USERS.get(email)
     if user and user["password"] == password:
         session["email"] = email
-        return jsonify({"success": True})
+        session["name"] = user["full_name"]  # Save full name in session
+
+        return redirect("/")
     else:
-        return jsonify({"success": False, "message": "Invalid credentials."})
-
-@app.route("/SignIn.html")
-def signin_page():
-    return send_from_directory(os.path.join(app.root_path, "Frontend", "HTML"), "SignIn.html")
-
+        return "Invalid credentials. <a href='/signin'>Try again</a>"
 
 @app.route("/Frontend/HTML/index.html")
 def redirect_legacy_index():
-    return redirect("/index.html")
+    return redirect("/index")
 
 
 
@@ -253,10 +306,13 @@ def runModel(discharge_rate, rainfall_IN, water_level):
         # Predict water levels
     predictions = model.predict(input_reshaped)[0].tolist()
     
+    
+    # predictions = [0.00045, 0.2598, 0.5123]  # Example predictions, replace with actual model output
+    
     return predictions
 
-@app.route("/index.html", methods=["GET", "POST"])
-def dashboard():
+@app.route("/index", methods=["GET", "POST"])
+def dashboard(): #manula input page
     if "email" not in session:
         return redirect("/Frontend/HTML/welcome.html")
 
@@ -266,7 +322,8 @@ def dashboard():
     alerts = []
     # Get live data from API
     try:
-        live_data = get_latest_water_level("I97")
+        live_data =  get_latest_water_level("I97")
+        print("Live Data:", live_data)  # Debug print statement
         waterlevel = live_data["level"]
         alert = live_data["alert"] 
         alert_desc = live_data["alert_description"]
@@ -322,6 +379,24 @@ def dashboard():
                            alerts = alerts
                         ) 
 
+
+
+
+@app.route("/profile")
+def profile():
+    if "email" not in session:
+        return redirect("/Frontend/HTML/SignIn.html")
+
+    user_email = session["email"]
+    user = USERS.get(user_email)
+
+    if not user:
+        return "User not found", 404
+
+    return render_template("profile.html", user=user, email=user_email)
+
+
+
 # ----------------------------------------------------------------
 # (H) Logout
 # ----------------------------------------------------------------
@@ -331,7 +406,7 @@ def logout():
     Clears session, returns user to welcome page.
     """
     session.clear()
-    return redirect("/Frontend/HTML/welcome.html")
+    return redirect(url_for("home"))
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% block content %}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+  body {
+      /* background: linear-gradient(180deg, #2a5298, #1e3c72); */
+      min-height: 100vh;
+      color: #222;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .logo-icon {
+      width: 28px;
+      height: 28px;
+      fill: white;
+  }
+
+  .card-main-header,
+  .card-water-level,
+  .card-flood-alerts,
+  .card-predicted-levels,
+  .card-emergency-info {
+      border-radius: 14px;
+  }
+
+  .card-main-header {
+      background: rgba(139, 138, 138, 0.85);
+      text-align: center;
+      padding: 2rem 1rem;
+      margin-bottom: 1.8rem;
+      color: #003366;
+      font-weight: 500;
+      font-size: 1.3rem;
+  }
+
+  .header-icon {
+      width: 72px;
+      height: 72px;
+      margin-bottom: 0.7rem;
+  }
+
+  .card-water-level {
+      background: rgba(232, 244, 255, 0.9);
+      color: #00355f;
+  }
+
+  .card-flood-alerts {
+      background: #fff4db;
+      color: #665400;
+  }
+
+  .card-predicted-levels {
+      background: #dff4ff;
+      color: #004a7f;
+  }
+
+  .card-emergency-info {
+      background: #ffe6e6;
+      color: #900000;
+  }
+
+  .icon-water, .icon-alert, .icon-predict, .icon-emergency {
+      margin-right: 0.4rem;
+  }
+
+  .icon-water { color: #0d6efd; }
+  .icon-alert { color: #ffb703; }
+  .icon-predict { color: #0dcaf0; }
+  .icon-emergency { color: #c82333; }
+
+  .small-bold {
+      font-weight: 600;
+  }
+
+  ul.tips-list {
+      padding-left: 1rem;
+      margin-bottom: 0;
+  }
+
+  @media (max-width: 576px) {
+      .card-main-header {
+          font-size: 1.1rem;
+      }
+  }
+</style>
+
+<main class="container my-5 px-3 px-sm-0">
+    <!-- Header -->
+    <section class="card card-main-header shadow-sm border-0">
+        <div class="header-icon mx-auto">
+            <img src="Images/FloodGuard.png" alt="FloodGuard Logo" class="img-fluid">
+        </div>
+        <p>Stay informed, stay safe. Monitor updates regularly!</p>
+    </section>
+
+    <!-- Data Grid -->
+    <div class="row g-4">
+
+        <!-- Live Water Level -->
+        <div class="col-12 col-md-6">
+            <section class="card card-water-level p-4 shadow-sm h-100">
+                <h5 class="mb-3 d-flex align-items-center">
+                    <svg class="icon-water" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 0a5.53 5.53 0 0 0-5.5 6.064c0 3.042 5.5 9.396 5.5 9.396s5.5-6.354 5.5-9.396A5.53 5.53 0 0 0 8 0z" />
+                    </svg>
+                    Live Data
+                </h5>
+                <p><span class="small-bold">Location:</span> <b> {{ location }} </b> </p>
+                <p><span class="small-bold">Water Level:</span> <b> {{ waterlevel }} m </b> </p>
+                <p><span class="small-bold">Rainfall:</span> <b> {{ rainfall }} mm </b> </p>
+                <p><span class="small-bold">Recorded Time:</span> <b> {{ recorded_time }} </b> </p>
+            </section>
+        </div>
+
+        <!-- Flood Alerts -->
+        <div class="col-12 col-md-6">
+            <section class="card card-flood-alerts p-3 shadow-sm h-100">
+                <h5 class="mb-3 d-flex align-items-center">
+                    <svg class="icon-alert" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.964 0L.165 13.233c-.457.778.091 1.767.982 1.767h13.706c.89 0 1.438-.99.982-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                    </svg>
+                    Flood Alerts
+                </h5>
+                {% for i in range(3) %}
+                <div class="mb-2 bg-white p-1 rounded-2 shadow-sm">
+                    <p><span class="small-bold">Next {{ i + 1 }} Hour:</span> {{ alerts[i] }}</p>
+                </div>
+                {% endfor %}
+            </section>
+        </div>
+
+        <!-- Predicted Water Levels -->
+        <div class="col-12 col-md-6">
+            <section class="card card-predicted-levels p-4 shadow-sm h-100">
+                <h5 class="mb-3 d-flex align-items-center">
+                    <svg class="icon-predict" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M0 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-3v1h1v1H6v-1h1v-1H4a2 2 0 0 1-2-2V3z"/>
+                    </svg>
+                    Predicted Water Levels
+                </h5>
+                <ul class="list-group list-group-flush mb-3 text-center">
+                    <li class="list-group-item">Next 1 Hour: {{ predictions[0] }}</li>
+                    <li class="list-group-item">Next 2 Hours: {{ predictions[1] }}</li>
+                    <li class="list-group-item">Next 3 Hours: {{ predictions[2] }}</li>
+                </ul>
+                <hr>
+                <div class="text-center">
+                    <p class="small text-muted">
+                        Want to explore how water levels change with different conditions? Try our manual prediction tool where you can enter custom discharge, rainfall, and water level values.
+                    </p>
+                    <a href="/index" class="btn btn-outline-primary btn-sm">🔍 Try Manual Prediction</a>
+                </div>
+            </section>
+        </div>
+
+        <!-- Emergency Information -->
+        <div class="col-12 col-md-6">
+            <section class="card card-emergency-info p-4 shadow-sm h-100">
+                <h5 class="mb-3 d-flex align-items-center">
+                    <svg class="icon-emergency" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.5.5 0 0 0-.5.5V7H5a.5.5 0 0 0 0 1h2.5v2.5a.5.5 0 0 0 1 0V8H11a.5.5 0 0 0 0-1H8.5V4.5A.5.5 0 0 0 8 4z"/>
+                    </svg>
+                    Emergency Contacts & Safety Information
+                </h5>
+                <ul class="list-unstyled mb-3">
+                    <li><span class="small-bold">Disaster Management Hotline:</span> 117 (24/7)</li>
+                    <li><span class="small-bold">Ambulance Services:</span> 1990 Suwa Seriya</li>
+                    <li><span class="small-bold">Police Emergency:</span> 119</li>
+                    <li><span class="small-bold">Local Authority:</span> +94 11 123 4567</li>
+                </ul>
+                <hr>
+                <ul class="tips-list">
+                    <li>Move to higher ground immediately during heavy rainfall.</li>
+                    <li>Avoid driving or walking through flooded areas.</li>
+                    <li>Keep emergency supplies ready including medications, food, and water.</li>
+                </ul>
+            </section>
+        </div>
+
+    </div>
+</main>
+
+{% endblock %}
