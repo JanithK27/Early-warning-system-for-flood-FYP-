@@ -146,12 +146,22 @@
                     <li class="list-group-item">Next 3 Hours: {{ predictions[2] }}</li>
                 </ul>
                 <hr>
+                {% if session.email %}
                 <div class="text-center">
-                    <p class="small text-muted">
-                        Want to explore how water levels change with different conditions? Try our manual prediction tool where you can enter custom discharge, rainfall, and water level values.
-                    </p>
+                    <h5 class="small text-muted">
+                        <b> See Other Alerts for different Water Levels </b>
+                    </h5>
                     <a href="/index" class="btn btn-outline-primary btn-sm">🔍 Try Manual Prediction</a>
                 </div>
+                {% else %}
+                <div class="text-center">
+                    <p class="small text-muted">
+                        To access the manual prediction tool and explore how water levels respond to various inputs, please sign in.
+                    </p>
+                    <a href="/signin" class="btn btn-outline-secondary btn-sm">🔐 Sign in to Continue</a>
+                </div>
+                {% endif %}
+
             </section>
         </div>
 
@@ -168,7 +178,7 @@
                     <li><span class="small-bold">Disaster Management Hotline:</span> 117 (24/7)</li>
                     <li><span class="small-bold">Ambulance Services:</span> 1990 Suwa Seriya</li>
                     <li><span class="small-bold">Police Emergency:</span> 119</li>
-                    <li><span class="small-bold">Local Authority:</span> +94 11 123 4567</li>
+                    <li><span class="small-bold">Local Authority:</span> +94 452 222 141 </li>
                 </ul>
                 <hr>
                 <ul class="tips-list">

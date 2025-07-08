@@ -38,8 +38,17 @@
             </div>
         </form>
     </section>
+<!-- 
+    <script>
+        const form = document.getElementById('realtime-form');
+        form.submit();
 
-    
+        inputs.forEach(input => {
+            input.addEventListener('change', () => {
+                form.submit();
+            });
+        });
+    </script> -->
 
     {% if predictions %}
     <section id="result" class="mb-5">
