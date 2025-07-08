@@ -4,19 +4,24 @@
 <div class="container my-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">👤 User Profile</h4>
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <div class="me-3">
+                        <!-- Profile avatar placeholder -->
+                        <div class="bg-white rounded-circle border border-2 border-white" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #0d6efd;">
+                            👤
+                        </div>
+                    </div>
+                    <h4 class="mb-0 fw-bold">User Profile</h4>
                 </div>
-                <div class="card-body">
-                    <p class="mb-2"><strong>Full Name:</strong> {{ user.full_name }}</p>
-                    <p class="mb-2"><strong>Email:</strong> {{ email }}</p>
-                    <p class="mb-2"><strong>Phone:</strong> {{ user.phone }}</p>
-                    <p class="mb-2"><strong>Address:</strong> {{ user.address }}</p>
-                    <p class="mb-4"><strong>Location:</strong> {{ user.location }}</p>
+                <div class="card-body text-start px-4 py-4">
+                    <p class="mb-3"><strong class="text-primary">Full Name:</strong> {{ user.full_name }}</p>
+                    <p class="mb-3"><strong class="text-primary">Email:</strong> {{ email }}</p>
+                    <p class="mb-3"><strong class="text-primary">Phone:</strong> {{ user.phone }}</p>
+                    <p class="mb-3"><strong class="text-primary">Address:</strong> {{ user.address }}</p>
 
-                    <div class="text-center">
-                        <a href="/logout" class="btn btn-outline-danger">🚪 Logout</a>
+                    <div class="d-grid">
+                        <a href="/logout" class="btn btn-outline-danger btn-lg fw-semibold">🚪 Logout</a>
                     </div>
                 </div>
             </div>
@@ -24,4 +29,4 @@
     </div>
 </div>
 
-{% endblock %}
+{% endblock %}

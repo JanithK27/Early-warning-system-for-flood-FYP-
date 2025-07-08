@@ -11,7 +11,6 @@ import requests_cache
 from retry_requests import retry
 import pandas as pd
 
-
 app = Flask(__name__)
 app.secret_key = "YOUR_SECRET_KEY"  # Session key
 CORS(app)
@@ -67,13 +66,15 @@ def serve_images(filename):
 @app.route("/")
 def home():
     discharge = rainfall = waterlevel = None
-    predictions_home = None
+    predictions = None
     alerts = None
     alerts = []
     # Get live data from API
     try:
         live_data = get_latest_water_level("I97")
-        print("Live Data:", live_data) 
+        # live_data =  {'unit_id': 'I97', 'level': 0.72, 'location': 'Kalu Ganga (Ratnapura)', 'time': '2025-07-08 17:18:00', 'alert': 0, 'alert_description': 'No Alert', 'coords': {'latitude': 6.6792149, 'longitude': 80.3972954}}
+
+        # print("Live Data:", live_data) 
         waterlevel = live_data["level"]
         alert = live_data["alert"] 
         alert_desc = live_data["alert_description"]
@@ -91,13 +92,12 @@ def home():
             rainfall = weather["current_rain"]
         
         
-        predictions_home = runModel(discharge, rainfall, waterlevel)
         
-        # Generate alerts based on the predictions
-        for pred_h in predictions_home:
-            alert_message = generate_alert_message(pred_h)
-            alerts.append(alert_message) 
-        
+        if request.method == "GET":
+            predictions = runModel(discharge, rainfall, waterlevel)
+            for pred in predictions:
+                alert_message = generate_alert_message(pred)
+                alerts.append(alert_message)
        
         
     except Exception as e:
@@ -113,7 +113,7 @@ def home():
                            alert_desc=alert_desc,
                            location=location,
                            recorded_time=recorded_time,
-                           predictions=predictions_home,
+                           predictions=predictions,
                            alerts = alerts,
                            name=name
 
@@ -139,7 +139,7 @@ def signup():
     email = data.get("email")
     phone = data.get("phone")
     address = data.get("address")
-    location = data.get("location")
+    #location = data.get("location")
     password = data.get("password")
     confirm_password = data.get("confirmPassword")
 
@@ -153,19 +153,16 @@ def signup():
         'full_name': full_name,
         'phone': phone,
         'address': address,
-        'location': location,
+        #'location': location,
         'password': password
     }
 
     # Log the user in (store email in session)
     session["email"] = email
+    session["name"] = full_name  # Save full name in session
     # Redirect to index.html (dashboard)
     return redirect("/")
 
-@app.route("/SignUp.html")
-def signup_page():
-    """Serves the SignUp.html page via GET."""
-    return send_from_directory(os.path.join(app.root_path, "Frontend", "HTML"), "SignUp.html")
 
 # ----------------------------------------------------------------
 # (E) Sign In
@@ -196,28 +193,7 @@ def signin():
     else:
         return "Invalid credentials. <a href='/signin'>Try again</a>"
 
-@app.route("/Frontend/HTML/index.html")
-def redirect_legacy_index():
-    return redirect("/index")
 
-
-
-# ----------------------------------------------------------------
-# (F) Google Sign-In (DEMO)
-# ----------------------------------------------------------------
-@app.route("/google_signin", methods=["POST"])
-def google_signin():
-    """
-    Suppose your front-end calls /google_signin with { email } from Google.
-    If email in USERS => log in => success
-    Else => fail
-    """
-    data = request.get_json()
-    google_email = data.get("email")
-    if google_email in USERS:
-        session["email"] = google_email
-        return {"success": True}
-    return {"success": False, "message": "User not registered."}
 
 ## Api call- for live water level
 
@@ -295,7 +271,7 @@ def get_latest_weather_data(latitude=6.6858, longitude=80.4036):
     }
 
 
-# (G) Dashboard 
+# real time data input the lstm
 
 def runModel(discharge_rate, rainfall_IN, water_level):
     # Replace with actual prediction logic
@@ -307,14 +283,14 @@ def runModel(discharge_rate, rainfall_IN, water_level):
     predictions = model.predict(input_reshaped)[0].tolist()
     
     
-    # predictions = [0.00045, 0.2598, 0.5123]  # Example predictions, replace with actual model output
-    
     return predictions
 
+
 @app.route("/index", methods=["GET", "POST"])
-def dashboard(): #manula input page
-    if "email" not in session:
-        return redirect("/Frontend/HTML/welcome.html")
+def dashboard(): #manual input
+    global count
+    # if "email" not in session:
+    #     return redirect("/Frontend/HTML/welcome.html")
 
     discharge = rainfall = waterlevel = None
     predictions = None
@@ -322,8 +298,10 @@ def dashboard(): #manula input page
     alerts = []
     # Get live data from API
     try:
-        live_data =  get_latest_water_level("I97")
-        print("Live Data:", live_data)  # Debug print statement
+        live_data = get_latest_water_level("I97")
+
+        # live_data =  {'unit_id': 'I97', 'level': 0.72, 'location': 'Kalu Ganga (Ratnapura)', 'time': '2025-07-08 17:18:00', 'alert': 0, 'alert_description': 'No Alert', 'coords': {'latitude': 6.6792149, 'longitude': 80.3972954}}
+        # print("Live Data:", live_data)  # Debug print statement
         waterlevel = live_data["level"]
         alert = live_data["alert"] 
         alert_desc = live_data["alert_description"]
@@ -340,25 +318,36 @@ def dashboard(): #manula input page
         else:
             rainfall = weather["current_rain"]
         
-        
-            
-        # print(rainfall)# Get form values
-        discharge_rate = request.form.get("discharge")
-        rainfall_IN = request.form.get("rainfall")
-        water_level = request.form.get("waterlevel")
 
-            # Debug print statements
-        print(f"Discharge Rate: {discharge_rate}")
-        print(f"Rainfall: {rainfall_IN}")
-        print(f"Water Level: {water_level}")
+        if request.method == "POST":
+            print("Received POST request")
+            discharge_rate = request.form.get("discharge")
+            rainfall_IN = request.form.get("rainfall")
+            water_level = request.form.get("waterlevel")
+            predictions = runModel(discharge_rate, rainfall_IN, water_level)
+            
+            for pred in predictions:
+                alert_message = generate_alert_message(pred)
+                alerts.append(alert_message) 
+            
+        else:
+            print("Received GET request")
+            predictions = runModel(discharge, rainfall, waterlevel)
+            
+            for pred in predictions:
+                alert_message = generate_alert_message(pred)
+                alerts.append(alert_message) 
+        
+        # Debug print statements
+        #print(f"Discharge Rate: {discharge_rate}")
+        #print(f"Rainfall: {rainfall_IN}")
+        #print(f"Water Level: {water_level}")
         # print("Received Data:", discharge_rate, rainfall_IN, water_level)    
         
-        predictions = runModel(discharge_rate, rainfall_IN, water_level)
+        #predictions = runModel(discharge_rate, rainfall_IN, water_level)
         
         # Generate alerts based on the predictions
-        for pred in predictions:
-            alert_message = generate_alert_message(pred)
-            alerts.append(alert_message) 
+        
         
        
         
@@ -384,17 +373,17 @@ def dashboard(): #manula input page
 
 @app.route("/profile")
 def profile():
+    # Redirect to sign-in page if user is not logged in
     if "email" not in session:
-        return redirect("/Frontend/HTML/SignIn.html")
+        return redirect(url_for("signin"))
 
-    user_email = session["email"]
+    user_email = session.get("email")
     user = USERS.get(user_email)
 
     if not user:
         return "User not found", 404
 
     return render_template("profile.html", user=user, email=user_email)
-
 
 
 # ----------------------------------------------------------------
