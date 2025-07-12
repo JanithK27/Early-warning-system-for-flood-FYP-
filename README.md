@@ -37,6 +37,15 @@ This system aims to minimize flood-related risks by providing **timely alerts up
 
 ---
 
+## 🎥 Demo Video
+
+📽️ Watch our system demo:  
+👉 [Click here to watch](Demo/Demo_FYP.mp4)
+
+> Note: If the video does not play in-browser, it will be downloaded.
+
+---
+
 ## 🛠️ How to Run Locally
 
 1. 🔽 Clone the repo:
