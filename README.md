@@ -7,7 +7,7 @@ This system aims to minimize flood-related risks by providing **timely alerts up
 
 ## 🚀 Key Features
 
-✅ Predicts water level for the next **1st, 2nd, and 3rd hours**  
+✅ Predicts water level for the next **1st, 2nd and 3rd hours**  
 ✅ Uses real-world data: **Water Level (m), Discharge Rate (cumecs), Rainfall (mm)**  
 ✅ Built with **LSTM, GRU, and Random Forest Regressor models**  
 ✅ Web-based UI with **Sign Up / Sign In / Dashboard**  
