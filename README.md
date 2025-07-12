@@ -9,7 +9,7 @@ This system aims to minimize flood-related risks by providing **timely alerts up
 
 ✅ Predicts water level for the next **1st, 2nd and 3rd hours**  
 ✅ Uses real-world data: **Water Level (m), Discharge Rate (cumecs), Rainfall (mm)**  
-✅ Built with **LSTM, GRU, and Random Forest Regressor models**  
+✅ Built with **LSTM, GRU and Random Forest Regressor models**  
 ✅ Web-based UI with **Sign Up / Sign In / Dashboard**  
 ✅ Displays **alert levels** with appropriate messages  
 ✅ Supports **real-time prediction** using live APIs 🌐  
@@ -37,17 +37,11 @@ This system aims to minimize flood-related risks by providing **timely alerts up
 
 ---
 
-## 📷 Dashboard Preview
-
-![Dashboard Preview](Frontend/HTML/Images/flood_alert.png)
-
----
-
 ## 🛠️ How to Run Locally
 
 1. 🔽 Clone the repo:
    ```bash
-   git clone https://github.com/yourusername/FloodGuard.git
+   git clone https://github.com/yourusername/Early-warning-system-for-flood-FYP-.git 
    cd FloodGuard
    ```
 
