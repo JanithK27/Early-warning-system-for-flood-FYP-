@@ -99,4 +99,4 @@ The `client_id` and `client_secret` have been removed from `app.py` for privacy 
 
 ---
 
-> 📢 _“Stay informed, stay safe – FloodGuard is here to alert you before the storm.”_
+> 📢 _“Stay informed, stay safe – FloodGuard is here to alert you before the flood.”_
