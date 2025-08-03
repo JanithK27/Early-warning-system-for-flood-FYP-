@@ -199,11 +199,11 @@ def signin():
 
 def get_latest_water_level(device_id="I97"):
     # Step 1: Get token
-    token_url = "https://www.warisoba.lk/services/api/salford/token"
+    token_url = "<AUTH_TOKEN_URL>"  # Replace with actual auth token URL (keep secret)
     token_data = {
         "grant_type": "client_credentials",
-        "client_id": "9f4cc8e7-ecc4-40d1-9402-acac9c574c72",
-        "client_secret": "wIuP4BM4iJVaXjFKBxJcBCZzoOxVxbSLwqYgJL50",
+        "client_id": "<CLIENT_ID>", 
+        "client_secret": "<CLIENT_SECRET>",
         "scope": "*"
     }
     token_headers = {
@@ -214,7 +214,7 @@ def get_latest_water_level(device_id="I97"):
     access_token = token_response.json()["access_token"]
 
     # Step 2: Call level API
-    data_url = f"https://www.warisoba.lk/services/api/salford/level/oxfamrg/latest/{device_id}"
+    data_url = f"<DATA_API_URL>/latest/{device_id}"  # Replace with actual data API URL
     data_headers = {
         "Authorization": f"Bearer {access_token}"
     }
